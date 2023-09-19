@@ -40,11 +40,13 @@ def checklen(text):
 class ChatCompletion:
     def __init__(self):
         return
-    
+
     @staticmethod
     def create(**kwargs):
         if "model" in kwargs.keys():
             model = kwargs["model"]
+            if model not in ["spark-1.5", "spark-2.0"]:
+                raise ValueError("model={} is not available".format(model))
         else:
             model = "spark-2.0"
         
@@ -56,7 +58,21 @@ class ChatCompletion:
         if "temperature" in kwargs.keys():
             randon_rate = kwargs["temperature"]
         else:
-            randon
+            randon_rate = 0.5
+
+        if model == "spark-1.5":
+            domain = "general"   
+            Spark_url = "ws://spark-api.xf-yun.com/v1.1/chat" 
+        elif model == "spark-2.0":
+            domain = "generalv2"    
+            Spark_url = "ws://spark-api.xf-yun.com/v2.1/chat" 
+
+        question = checklen(getText("user",mess))
+        SparkApi.answer =""
+        SparkApi.main(appid,api_key,api_secret,Spark_url,domain,question)
+        conversation = getText("assistant", SparkApi.answer)
+        
+        return conversation
         
         
 
@@ -64,11 +80,11 @@ class ChatCompletion:
 if __name__ == '__main__':
     text.clear
     while(1):
-        Input = input("\n" +"我:")
+        Input = input("\n" +"usr:")
         question = checklen(getText("user",Input))
         SparkApi.answer =""
-        print("星火:",end = "")
+        print("spark:",end = "")
         SparkApi.main(appid,api_key,api_secret,Spark_url,domain,question)
-        getText("assistant",SparkApi.answer)
-        # print(str(text))
-
+        text = getText("assistant",SparkApi.answer) 
+        print('\n')
+        print(str(text))

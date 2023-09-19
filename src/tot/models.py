@@ -25,7 +25,7 @@ def chatgpt(messages, model="spark-2.0", temperature=0.5, max_tokens=1000, n=1, 
         n -= cnt
         res = completions_with_backoff(model=model, messages=messages, temperature=temperature, max_tokens=max_tokens, n=cnt, stop=stop)
 
-        outputs.extend([choice["message"]["content"] for choice in res["choices"]])
+        # outputs.extend([choice["message"]["content"] for choice in res["choices"]])
         # log completion tokens
         completion_tokens += res["usage"]["completion_tokens"]
         prompt_tokens += res["usage"]["prompt_tokens"]

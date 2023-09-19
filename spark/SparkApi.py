@@ -125,7 +125,6 @@ def gen_params(appid, domain,question):
 
 
 def main(appid, api_key, api_secret, Spark_url,domain, question):
-    # print("星火:")
     wsParam = Ws_Param(appid, api_key, api_secret, Spark_url)
     websocket.enableTrace(False)
     wsUrl = wsParam.create_url()
