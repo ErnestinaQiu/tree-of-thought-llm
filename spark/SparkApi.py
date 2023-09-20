@@ -14,6 +14,7 @@ from wsgiref.handlers import format_date_time
 
 import websocket  # 使用websocket_client
 answer = ""
+record = {"completion_tokens": 0, "prompt_tokens": 0}
 
 class Ws_Param(object):
     # 初始化
@@ -92,9 +93,13 @@ def on_message(ws, message):
         content = choices["text"][0]["content"]
         print(content,end ="")
         global answer
-        answer += content
+        answer += content   
         # print(1)
         if status == 2:
+            global record
+            record["completion_tokens"] += data["payload"]["usage"]["text"]["completion_tokens"]
+            record["prompt_tokens"] += data["payload"]["usage"]["text"]["prompt_tokens"]
+            # print("\n record: \n {}".format(record))  
             ws.close()
 
 

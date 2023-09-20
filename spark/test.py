@@ -71,12 +71,10 @@ class ChatCompletion:
         SparkApi.answer =""
         SparkApi.main(appid,api_key,api_secret,Spark_url,domain,question)
         conversation = getText("assistant", SparkApi.answer)
-        
-        return conversation
-        
-        
+        res = {"content": conversation, "usage": SparkApi.record}
 
-
+        return res
+        
 if __name__ == '__main__':
     text.clear
     while(1):
