@@ -31,9 +31,16 @@ def get_votes(task, x, ys, n_evaluate_sample):
     values = task.vote_outputs_unwrap(vote_outputs, len(ys))
     return values
 
-def get_proposals(task, x, y): 
+# def get_proposals(task, x, y): 
+#     propose_prompt = task.propose_prompt_wrap(x, y)
+#     proposals = gpt(propose_prompt, n=1, stop=None)[0].split('\n')
+#     return [y + _ + '\n' for _ in proposals]
+
+def get_proposals(task, x, y):
     propose_prompt = task.propose_prompt_wrap(x, y)
-    proposals = gpt(propose_prompt, n=1, stop=None)[0].split('\n')
+    tmp = gpt(propose_prompt, n=1, stop=None)[0]['content'][0]
+    proposals = tmp.split('\n')
+    print("prpposals: {}".format(proposals))
     return [y + _ + '\n' for _ in proposals]
 
 def get_samples(task, x, y, n_generate_sample, prompt_sample, stop):
