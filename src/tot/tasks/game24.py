@@ -86,7 +86,10 @@ class Game24Task(Task):
     def value_outputs_unwrap(x: str, y: str, value_outputs: list) -> float:
         if len(y.strip().split('\n')) == 4 and 'answer' not in y.lower():
             return 0
-        value_names = [_.split('\n')[-1] for _ in value_outputs]
-        value_map = {'impossible': 0.001, 'likely': 1, 'sure': 20}  # TODO: ad hoc
+        if isinstance(value_outputs[0], dict):
+            value_names = [tmp_d['content'].split('\n')[-1] for tmp_d in value_outputs]
+        elif isinstance(value_outputs[0], list):
+            value_names = [_.split('\n')[-1] for _ in value_outputs]
+        value_map = {'impossible': 0.001, 'likely': 1, 'sure': 20, '不可能': 0.001, '可能': 1, '一定': 20}  # TODO: ad hoc
         value = sum(value * value_names.count(name) for name, value in value_map.items())
         return value

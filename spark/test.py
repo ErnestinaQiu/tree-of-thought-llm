@@ -52,6 +52,9 @@ class ChatCompletion:
         
         if "messages" in kwargs.keys():
             mess = kwargs["messages"]
+            if len(mess) > 1:
+                raise ValueError("len(mess): {} is above 1, please check again! \n mess:{}".format(len(mess), mess))
+            message = mess[0]["content"]
         else:
             mess = ""
         
@@ -67,8 +70,8 @@ class ChatCompletion:
             domain = "generalv2"    
             Spark_url = "ws://spark-api.xf-yun.com/v2.1/chat" 
 
-        question = checklen(getText("user",mess))
-        SparkApi.answer =""
+        question = checklen(getText("user", message))
+        SparkApi.answer = ""
         SparkApi.main(appid,api_key,api_secret,Spark_url,domain,question)
         conversation = getText("assistant", SparkApi.answer)
         res = {"content": conversation, "usage": SparkApi.record}

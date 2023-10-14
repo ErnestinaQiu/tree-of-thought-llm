@@ -9,7 +9,7 @@ from spark.test import ChatCompletion as SparkChatCompletion
 
 completion_tokens = prompt_tokens = 0
 
-# @backoff.on_exception(backoff.expo, max_tries=3, exception=[])
+# @backoff.on_exception(backoff.expo, max_tries=3, exception=[ClientMsgError])
 def completions_with_backoff(**kwargs):
     return SparkChatCompletion.create(**kwargs)
 

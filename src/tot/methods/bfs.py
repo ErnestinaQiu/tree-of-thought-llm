@@ -38,9 +38,8 @@ def get_votes(task, x, ys, n_evaluate_sample):
 
 def get_proposals(task, x, y):
     propose_prompt = task.propose_prompt_wrap(x, y)
-    tmp = gpt(propose_prompt, n=1, stop=None)[0]['content'][0]
-    proposals = tmp.split('\n')
-    print("prpposals: {}".format(proposals))
+    tmp = gpt(propose_prompt, n=1, stop=None)
+    proposals = tmp[0]['content'].split('\n')
     return [y + _ + '\n' for _ in proposals]
 
 def get_samples(task, x, y, n_generate_sample, prompt_sample, stop):
@@ -56,7 +55,6 @@ def get_samples(task, x, y, n_generate_sample, prompt_sample, stop):
 def solve(args, task, idx, to_print=True):
     global gpt
     gpt = partial(gpt, model=args.backend, temperature=args.temperature)
-    print(gpt)
     x = task.get_input(idx)  # input
     ys = ['']  # current output candidates
     infos = []
