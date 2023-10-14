@@ -1,0 +1,1 @@
+["Input: 2 8 8 14\n\n\n\n", "Possible next steps:\n\n\n\n", "2 + 8 = 10 (left: 8 10 14)\n\n\n\n", "8 / 2 = 4 (left: 4 8 14)\n\n\n\n", "14 + 2 = 16 (left: 8 8 16)\n\n\n\n"]
