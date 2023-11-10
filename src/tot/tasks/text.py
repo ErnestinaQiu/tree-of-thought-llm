@@ -1,8 +1,8 @@
 import os
 import re
-from tot.tasks.base import Task, DATA_PATH
-from tot.prompts.text import *
-from tot.models import gpt
+from src.tot.tasks.base import Task, DATA_PATH
+from src.tot.prompts.text import *
+from src.tot.models import gpt
 
 
 class TextTask(Task):
