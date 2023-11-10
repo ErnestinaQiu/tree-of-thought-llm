@@ -1,19 +1,24 @@
 from typing import List, Optional
-
+import os
+import json
 import fire
 
 from llama2.llama.llama import Llama, Dialog
 from llama2 import ckpt_dir, tokenizer_path, max_seq_len, max_batch_size
 
-dialogs = [
+messages = [
     [
      {"role": "system", "content": "Do not make up answer if you don't know."},
      {"role": "user", "content": "Who are you? Please introduce yourself."}
+    ],
+    [
+        {"role": "system", "content": "Do not make up answer if you don't know."},
+        {"role": "user", "content": "I want to start math learning, what tools should I prepare for that?"}
     ]
 ]
 
 def main(
-    dialogs: List[Dialog] = dialogs,
+    messages: List[Dialog] = messages,
     ckpt_dir: str = ckpt_dir,
     tokenizer_path: str = tokenizer_path,
     temperature: float = 0.6,
@@ -25,7 +30,7 @@ def main(
     Entry point of the program for generating text using a pretrained model.
 
     Args:
-        dialogs (list): There are two roles including "system" and "user". 
+        messages (list): There are two roles including "system" and "user". 
         --Example  [[{"role": "user", "content": "what is the recipe of mayonnaise?"}, {"role": "system", "content": "Always answer with Haiku"}]]
         ckpt_dir (str): The directory containing checkpoint files for the pretrained model.
         tokenizer_path (str): The path to the tokenizer model used for text encoding/decoding.
@@ -46,13 +51,19 @@ def main(
     )
 
     results = generator.chat_completion(
-        dialogs,  # type: ignore
+        messages,  # type: ignore
         max_gen_len=max_gen_len,
         temperature=temperature,
         top_p=top_p,
     )
 
-    for dialog, result in zip(dialogs, results):
+    tmp_sp = os.path.join(os.getcwd(), "tmp/results.txt")
+    print("results: \n", results)
+    # f = open(tmp_sp, 'w', encoding="utf8")
+    # f.wrire(str(results))
+    # f.close()
+
+    for dialog, result in zip(messages, results):
         for msg in dialog:
             print(f"{msg['role'].capitalize()}: {msg['content']}\n")
         print(
@@ -62,7 +73,8 @@ def main(
 
 
 if __name__ == "__main__":
-    fire.Fire(main)
+    # fire.Fire(main)
+    main()
 
 
 """
@@ -73,7 +85,7 @@ test dialog:
     ]
 ]
 
-torchrun example_chat_completion.py --dialogs [
+torchrun example_chat_completion.py --messages [
     [{"role": "user", "content": "Who are you? Please introduce yourself."},
      {"role": "system", "content": "Do not make up answer if you don't know."}
     ]
