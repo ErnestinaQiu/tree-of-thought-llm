@@ -1,25 +1,35 @@
 import os
-import openai
 import backoff 
+from src.models import llama
 
-completion_tokens = prompt_tokens = 0
 
-api_key = os.getenv("OPENAI_API_KEY", "")
-if api_key != "":
-    openai.api_key = api_key
-else:
-    print("Warning: OPENAI_API_KEY is not set")
-    
-api_base = os.getenv("OPENAI_API_BASE", "")
-if api_base != "":
-    print("Warning: OPENAI_API_BASE is set to {}".format(api_base))
-    openai.api_base = api_base
-
-@backoff.on_exception(backoff.expo, openai.error.OpenAIError)
 def completions_with_backoff(**kwargs):
-    return openai.ChatCompletion.create(**kwargs)
+    # res = completions_with_backoff(model=model, messages=messages, temperature=temperature, max_tokens=max_tokens, n=cnt, stop=stop)
+    model = kwargs["model"]
+    if "llama" in model or "Llama" in model:
+        return llama.ChatCompletion.create(**kwargs)
 
-def gpt(prompt, model="gpt-4", temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
+
+#     return openai.ChatCompletion.create(**kwargs)
+
+# completion_tokens = prompt_tokens = 0
+
+# api_key = os.getenv("OPENAI_API_KEY", "")
+# if api_key != "":
+#     openai.api_key = api_key
+# else:
+#     print("Warning: OPENAI_API_KEY is not set")
+    
+# api_base = os.getenv("OPENAI_API_BASE", "")
+# if api_base != "":
+#     print("Warning: OPENAI_API_BASE is set to {}".format(api_base))
+#     openai.api_base = api_base
+
+# @backoff.on_exception(backoff.expo, openai.error.OpenAIError)
+# def completions_with_backoff(**kwargs):
+#     return openai.ChatCompletion.create(**kwargs)
+
+def gpt(prompt, model="llama-2-7b", temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
     messages = [{"role": "user", "content": prompt}]
     return chatgpt(messages, model=model, temperature=temperature, max_tokens=max_tokens, n=n, stop=stop)
     
