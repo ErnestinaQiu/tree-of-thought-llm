@@ -74,6 +74,10 @@ def main(
 
 if __name__ == "__main__":
     # fire.Fire(main)
+    os.environ["WORLD_SIZE"] = '1'
+    os.environ["RANK"] = '0'
+    os.environ["MASTER_ADDR"] = 'localhost'
+    os.environ["MASTER_PORT"] = '8020'
     main()
 
 

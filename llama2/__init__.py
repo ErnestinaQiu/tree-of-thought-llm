@@ -6,6 +6,12 @@ import time
 from typing import List, Optional
 from llama2.llama.llama import Llama, Dialog
 
+import os
+os.environ["WORLD_SIZE"] = '1'
+os.environ["RANK"] = '0'
+os.environ["MASTER_ADDR"] = 'localhost'
+os.environ["MASTER_PORT"] = '8020'
+
 ckpt_dir = "/mnt/e/study/dl/llama2/llama-2-7b-chat/"
 tokenizer_path = "/mnt/e/study/dl/llama2/tokenizer.model"
 max_seq_len = 512
@@ -14,9 +20,14 @@ max_batch_size = 6
 
 class ChatCompletion:
     def __init__(self) -> None:
-        pass
+        self.generator = Llama.build(
+            ckpt_dir=ckpt_dir,
+            tokenizer_path=tokenizer_path,
+            max_seq_len=max_seq_len,
+            max_batch_size=max_batch_size,
+            )
 
-    @staticmethod
+    # @staticmethod
     def create(
         messages: List[Dialog],
         ckpt_dir: str = ckpt_dir,
@@ -44,14 +55,9 @@ class ChatCompletion:
             max_gen_len (int, optional): The maximum length of generated sequences. If None, it will be
                 set to the model's max sequence length. Defaults to None.
         """
-        generator = Llama.build(
-            ckpt_dir=ckpt_dir,
-            tokenizer_path=tokenizer_path,
-            max_seq_len=max_seq_len,
-            max_batch_size=max_batch_size,
-        )
 
-        results = generator.chat_completion(
+
+        results = self.generator.chat_completion(
             messages,  # type: ignore
             max_gen_len=max_gen_len,
             temperature=temperature,
@@ -74,6 +80,7 @@ class ChatCompletion:
         assert len(messages) == len(results)
         for i in range(len(results)):
             dialog = messages[i]
+            print(f"dialog: \n {dialog}")
             result = results[i]
             if i == len(results) - 1:
                 finish_reason = "stop"
@@ -87,4 +94,7 @@ class ChatCompletion:
             tmp["message"]["role"] = result["generation"]['role']
             tmp['message']['content'] = result['generation']['content']
             completion["choices"].append(tmp)
+            print(f"result: \n {result}")
+            
+    
         return completion
