@@ -90,7 +90,6 @@ def solve(args, task, idx, to_print=True):
 def naive_solve(args, task, idx, to_print=True):
     global gpt
     gpt = partial(gpt, model=args.backend, temperature=args.temperature)
-    print(gpt)
     x = task.get_input(idx)  # input
     ys = get_samples(task, x, '', args.n_generate_sample, args.prompt_sample, stop=None)
     return ys, {}

@@ -19,6 +19,10 @@ max_batch_size = 6
 
 
 class ChatCompletion:
+    global ckpt_dir
+    global tokenizer_path
+    global max_seq_len
+    global max_batch_size
     def __init__(self) -> None:
         self.generator = Llama.build(
             ckpt_dir=ckpt_dir,
@@ -29,15 +33,10 @@ class ChatCompletion:
 
     # @staticmethod
     def create(
+        self,
         messages: List[Dialog],
-        ckpt_dir: str = ckpt_dir,
-        tokenizer_path: str = tokenizer_path,
         temperature: float = 0.6,
-        top_p: float = 0.9,
-        max_seq_len: int = max_seq_len,
-        max_batch_size: int = max_batch_size,
-        max_gen_len: Optional[int] = None, 
-        **kwargs):
+        top_p: float = 0.9, max_gen_len: Optional[int] = None):
         """
         Entry point of the program for generating text using a pretrained model.
 
@@ -55,8 +54,6 @@ class ChatCompletion:
             max_gen_len (int, optional): The maximum length of generated sequences. If None, it will be
                 set to the model's max sequence length. Defaults to None.
         """
-
-
         results = self.generator.chat_completion(
             messages,  # type: ignore
             max_gen_len=max_gen_len,
@@ -92,9 +89,10 @@ class ChatCompletion:
                     "message": {"content": "", "role": ""}
                     }
             tmp["message"]["role"] = result["generation"]['role']
-            tmp['message']['content'] = result['generation']['content']
+            tmp['message']['content'] = result['generation']['content'].replace("\n", "")
+
             completion["choices"].append(tmp)
-            print(f"result: \n {result}")
+            print(f"\n result: \n {result}")
             
     
         return completion
