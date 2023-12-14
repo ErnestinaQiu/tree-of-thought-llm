@@ -3,6 +3,7 @@ author: Ernestina
 des: 1) set configure 2) initiate llama2
 """
 import time
+import yaml
 from typing import List, Optional
 from llama2.llama.llama import Llama, Dialog
 
@@ -12,18 +13,22 @@ os.environ["RANK"] = '0'
 os.environ["MASTER_ADDR"] = 'localhost'
 os.environ["MASTER_PORT"] = '8020'
 
-ckpt_dir = "/mnt/e/study/dl/llama2/llama-2-7b-chat/"
-tokenizer_path = "/mnt/e/study/dl/llama2/tokenizer.model"
-max_seq_len = 512
-max_batch_size = 6
+llm_config_path = os.path.join(os.getcwd(), "llm_config.yml")
+with open(llm_config_path, 'r') as f:
+    log_config = yaml.full_load(f.read())
 
 
 class ChatCompletion:
-    global ckpt_dir
-    global tokenizer_path
+    global log_config
     global max_seq_len
     global max_batch_size
-    def __init__(self) -> None:
+    def __init__(self, model="llama-2-7b-chat") -> None:
+        ckpt_dir = log_config[model]["ckpt_dir"]
+        tokenizer_path = log_config[model]["tokenizer_path"]
+        # ckpt_dir = f"/mnt/e/study/dl/llama2/{model}/"
+        # tokenizer_path = "/mnt/e/study/dl/llama2/tokenizer.model"
+        max_seq_len = 1000
+        max_batch_size = 6
         self.generator = Llama.build(
             ckpt_dir=ckpt_dir,
             tokenizer_path=tokenizer_path,
@@ -65,7 +70,7 @@ class ChatCompletion:
                         "choices": [],
                         "created": time.time(),
                         "id": "llama2_{}".format(int(time.time())),
-                        "model": "llama2",
+                        "model": "llama-2-7b-chat",
                         "object": "chat.completion",
                         "usage": {
                             "completion_tokens": 0,

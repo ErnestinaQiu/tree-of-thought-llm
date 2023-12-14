@@ -12,18 +12,22 @@ def completions_with_backoff(**kwargs):
     return chater.create(messages=kwargs["messages"], temperature=kwargs["temperature"])
 
 
-def gpt(prompt, model="llama2", temperature=0.6, max_tokens=1000, n=1, stop=None) -> list:
+def gpt(prompt, model="llama-2-7b-chat", temperature=0.6, max_tokens=1000, n=1, stop=None) -> list:
     # 1
     # messages = [[{"role": "system", "content": "Do not make up answer if you don't know."},
     #             {"role": "user", "content": prompt}]]
-    messages = [[{"role": "user", "content": prompt}]]
+    messages = [[{"role": "system", "content": ""}, {"role": "user", "content": prompt}]]
     return chatgpt(messages=messages, model=model, temperature=temperature, max_tokens=max_tokens, n=1, stop=stop)
 
 
-def chatgpt(messages, model="llama2", temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
+def chatgpt(messages, model="llama-2-7b-chat", temperature=0.7, max_tokens=1000, n=1, stop=None) -> list:
     global completion_tokens, prompt_tokens
-    if model == "llama2":
+    if model == "llama-2-7b-chat":
         chater = ChatCompletion()
+    elif model == "llama2-13b-chat":
+        chater = ChatCompletion(model)
+    elif model == "llama2-70b-chat":
+        chater = ChatCompletion(model)
     
     outputs = []
     while n > 0:
@@ -38,9 +42,9 @@ def chatgpt(messages, model="llama2", temperature=0.7, max_tokens=1000, n=1, sto
     return outputs
 
     
-def gpt_usage(backend="llama2"):
+def gpt_usage(backend="llama-2-7b-chat"):
     global completion_tokens, prompt_tokens
-    if backend == "llama2":
+    if backend == "llama-2-7b-chat":
         cost = completion_tokens / 1000 * 0.06 + prompt_tokens / 1000 * 0.03
     # elif backend == "gpt-3.5-turbo":
     #     cost = completion_tokens / 1000 * 0.002 + prompt_tokens / 1000 * 0.0015
