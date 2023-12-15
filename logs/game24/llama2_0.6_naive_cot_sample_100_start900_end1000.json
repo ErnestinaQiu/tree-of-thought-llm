@@ -1,0 +1,18 @@
+[
+    {
+        "idx": 900,
+        "ys": [
+            " Great! Let's get started.Input: 4 4 6 8Steps:4 + 8 = 12 (left: 4 6 12)6 - 4 = 2 (left: 2 12)2 * 12 = 24 (left: 24)Answer: (6 - 4) * (4 + 8) = 24Input: 2 9 10 12Steps:12 * 2 = 24 (left: 9 10 24)10 - 9 = 1 (left: 1 24)24 * 1 = 24 (left: 24)Answer: (12 * 2) * (10 - 9) = 24Input: 4 9 10 13Steps:13 - 10 = 3 (left: 3 4 9)9 - 3 = 6 (left: 4 6)4 * 6 = 24 (left: 24)Answer: 4 * (9 - (13 - 10)) = 24Input: 1 4 8 8Steps:8 / 4 = 2 (left: 1 2 8)1 + 2 = 3 (left: 3 4 8)3 * 8 = 24 (left: 24)Answer: (1 + 8 / 4) * 8 = 24Input: 5 5 5 9Steps:8 / 5 = 1.6 (left: 5 9 10)1.6 + 5 = 6.6 (left: 6 10)6.6 + 5 = 11.6 (left: 11 10)11.6 + 9 = 20.6 (left: 20 10)"
+        ],
+        "infos": [
+            {
+                "r": 0
+            }
+        ],
+        "usage_so_far": {
+            "completion_tokens": 0,
+            "prompt_tokens": 0,
+            "cost": 0.0
+        }
+    }
+]

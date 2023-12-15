@@ -2,9 +2,9 @@ import os
 import json
 import argparse
 
-from tot.tasks import get_task
-from tot.methods.bfs import solve, naive_solve
-from tot.models import gpt_usage
+from src.tot.tasks import get_task
+from src.tot.methods.bfs import solve, naive_solve
+from src.tot.models import gpt_usage
 
 def run(args):
     task = get_task(args.task)
@@ -42,7 +42,7 @@ def run(args):
 
 def parse_args():
     args = argparse.ArgumentParser()
-    args.add_argument('--backend', type=str, choices=['llama2'], default='llama2')
+    args.add_argument('--backend', type=str, choices=['llama-2-7b-chat'], default='llama-2-7b-chat')
     args.add_argument('--temperature', type=float, default=0.6)
 
     args.add_argument('--task', type=str, required=True, choices=['game24', 'text', 'crosswords'])

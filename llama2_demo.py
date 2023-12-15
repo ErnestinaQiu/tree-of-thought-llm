@@ -1,7 +1,6 @@
 from typing import List, Optional
 import os
 import json
-import fire
 
 from llama2.llama.llama import Llama, Dialog
 from llama2 import ckpt_dir, tokenizer_path, max_seq_len, max_batch_size
