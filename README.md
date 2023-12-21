@@ -45,8 +45,8 @@ pip install -e .  # install `tot` package
 The following minimal script will attempt to solve the game of 24 with `4 5 6 10` (might be a bit slow as it's using GPT-4):
 ```python
 import argparse
-from tot.methods.bfs import solve
-from tot.tasks.game24 import Game24Task
+from src.tot.methods.bfs import solve
+from src.tot.tasks.game24 import Game24Task
 
 args = argparse.Namespace(backend='gpt-4', temperature=0.7, task='game24', naive_run=False, prompt_sample=None, method_generate='propose', method_evaluate='value', method_select='greedy', n_generate_sample=1, n_evaluate_sample=3, n_select_sample=5)
 
